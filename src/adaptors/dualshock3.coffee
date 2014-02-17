@@ -17,13 +17,14 @@ DualShock = require 'dualshock-controller'
 namespace "Cylon.Adaptors.Joystick", ->
   class @DualShock3 extends Cylon.Adaptor
     constructor: (opts = {}) ->
+      config = opts.extraParams.config
       opts.initialize ?= true
       @joystick = null
       super
-      do @connectToController if opts.initialize
+      @connectToController(config) if opts.initialize
 
-    connectToController: ->
-      @connector = @joystick = DualShock()
+    connectToController: (config) ->
+      @connector = @joystick = DualShock(config: config)
       @proxyMethods @commands(), @joystick, this
 
     connect: (callback) ->

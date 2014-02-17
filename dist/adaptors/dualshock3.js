@@ -24,21 +24,25 @@
       __extends(DualShock3, _super);
 
       function DualShock3(opts) {
+        var config;
         if (opts == null) {
           opts = {};
         }
+        config = opts.extraParams.config;
         if (opts.initialize == null) {
           opts.initialize = true;
         }
         this.joystick = null;
         DualShock3.__super__.constructor.apply(this, arguments);
         if (opts.initialize) {
-          this.connectToController();
+          this.connectToController(config);
         }
       }
 
-      DualShock3.prototype.connectToController = function() {
-        this.connector = this.joystick = DualShock();
+      DualShock3.prototype.connectToController = function(config) {
+        this.connector = this.joystick = DualShock({
+          config: config
+        });
         return this.proxyMethods(this.commands(), this.joystick, this);
       };
 
